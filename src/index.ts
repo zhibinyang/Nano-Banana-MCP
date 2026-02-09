@@ -660,19 +660,28 @@ class NanoBananaMCP {
   }
 
   private getImagesDirectory(): string {
+    // Allow user to specify custom output directory via environment variable
+    const customDir = process.env.NANO_BANANA_OUTPUT_DIR;
+    if (customDir) {
+      return customDir;
+    }
+
     const platform = os.platform();
+    const homeDir = os.homedir();
 
     if (platform === 'win32') {
       // Windows: Use Documents folder
-      const homeDir = os.homedir();
       return path.join(homeDir, 'Documents', 'nano-banana-images');
     } else {
-      // macOS/Linux: Use current directory or home directory if in system paths
+      // macOS/Linux: Use current directory or home directory if in problematic paths
       const cwd = process.cwd();
-      const homeDir = os.homedir();
 
-      // If in system directories, use home directory instead
-      if (cwd.startsWith('/usr/') || cwd.startsWith('/opt/') || cwd.startsWith('/var/')) {
+      // If in system directories, root directory, or unwritable paths, use home directory
+      const isSystemPath = cwd.startsWith('/usr/') || cwd.startsWith('/opt/') || cwd.startsWith('/var/');
+      const isRootPath = cwd === '/';
+      const isTempOrCache = cwd.includes('/tmp/') || cwd.includes('/cache/') || cwd.includes('/.npm/');
+
+      if (isSystemPath || isRootPath || isTempOrCache) {
         return path.join(homeDir, 'nano-banana-images');
       }
 

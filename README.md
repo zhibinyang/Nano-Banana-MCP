@@ -227,6 +227,7 @@ The MCP server loads your API key in the following priority order:
 |----------|-------------|---------|
 | `GEMINI_API_KEY` | Your Gemini API key (required) | - |
 | `GEMINI_IMAGE_MODEL` | Default image generation model | `gemini-2.5-flash-image` |
+| `NANO_BANANA_OUTPUT_DIR` | Custom directory for saving generated images | Platform-specific (see below) |
 
 **Available Models:**
 - `gemini-2.5-flash-image` - Fast, optimized for speed (1024px output)
@@ -236,9 +237,14 @@ The MCP server loads your API key in the following priority order:
 
 Images are automatically saved to platform-appropriate locations:
 
-- **Windows**: `%USERPROFILE%\\Documents\\nano-banana-images\\`
+- **Custom**: Set `NANO_BANANA_OUTPUT_DIR` environment variable to override default paths
+- **Windows**: `%USERPROFILE%\Documents\nano-banana-images\`
 - **macOS/Linux**: `./generated_imgs/` (in current directory)
-- **System directories**: `~/nano-banana-images/` (when run from system paths)
+- **Fallback**: `~/nano-banana-images/` (when run from `/`, system paths, or temp directories)
+
+**💡 Tip for MCP clients**: When running via `npx` in sandboxed environments (like Antigravity), the working directory may be `/` which is not writable. In such cases, either:
+1. Set `NANO_BANANA_OUTPUT_DIR` to specify a custom output path, or
+2. The server will automatically fall back to `~/nano-banana-images/`
 
 File naming convention:
 - Generated images: `generated-[timestamp]-[id].png`
