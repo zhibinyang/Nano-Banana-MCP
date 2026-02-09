@@ -19,7 +19,7 @@ import { config as dotenvConfig } from "dotenv";
 import os from "os";
 
 // Load environment variables
-dotenvConfig();
+dotenvConfig({ quiet: true });
 
 const ConfigSchema = z.object({
   geminiApiKey: z.string().min(1, "Gemini API key is required"),
