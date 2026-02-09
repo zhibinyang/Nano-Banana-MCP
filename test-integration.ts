@@ -28,7 +28,7 @@ class IntegrationTester {
       await this.testBuildProcess();
       await this.testConfigurationHandling();
       await this.testToolSchema();
-      
+
       this.printResults();
     } catch (error) {
       console.error('❌ Integration tests failed:', error);
@@ -64,7 +64,7 @@ class IntegrationTester {
 
       const requiredDeps = [
         '@modelcontextprotocol/sdk',
-        '@google/generative-ai',
+        '@google/genai',
         'dotenv',
         'zod',
       ];
@@ -132,7 +132,7 @@ class IntegrationTester {
       };
 
       const configPath = path.join(process.cwd(), '.nano-banana-config-test.json');
-      
+
       // Write test config
       await fs.writeFile(configPath, JSON.stringify(testConfig, null, 2));
       this.addResult('Configuration - Write', true, '✅ Config file written');
@@ -140,7 +140,7 @@ class IntegrationTester {
       // Read test config
       const configData = await fs.readFile(configPath, 'utf-8');
       const parsedConfig = JSON.parse(configData);
-      
+
       if (parsedConfig.geminiApiKey === testConfig.geminiApiKey) {
         this.addResult('Configuration - Read', true, '✅ Config file read correctly');
       } else {
@@ -167,8 +167,11 @@ class IntegrationTester {
         'generate_image',
         'edit_image',
         'get_configuration_status',
-        'GoogleGenerativeAI',
-        'gemini-2.5-flash-image-preview',
+        'GoogleGenAI',
+        'gemini-2.5-flash-image',
+        'gemini-3-pro-image-preview',
+        'aspectRatio',
+        'imageSize',
       ];
 
       for (const element of requiredElements) {
@@ -186,11 +189,11 @@ class IntegrationTester {
         { input: 'test.webp', expected: 'image/webp' },
       ];
 
-      const hasMimeTypeLogic = sourceCode.includes('getMimeType') || 
-                              sourceCode.includes('image/jpeg') ||
-                              sourceCode.includes('image/png');
+      const hasMimeTypeLogic = sourceCode.includes('getMimeType') ||
+        sourceCode.includes('image/jpeg') ||
+        sourceCode.includes('image/png');
 
-      this.addResult('MIME type handling', hasMimeTypeLogic, 
+      this.addResult('MIME type handling', hasMimeTypeLogic,
         hasMimeTypeLogic ? '✅ MIME type logic found' : '❌ MIME type logic missing');
 
     } catch (error) {
