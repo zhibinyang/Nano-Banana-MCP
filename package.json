@@ -1,5 +1,5 @@
 {
-  "name": "nano-banana-mcp",
+  "name": "@zhibinyang/nano-banana-mcp",
   "version": "1.0.3",
   "description": "MCP server for Google's Gemini 2.5 Flash Image generation API with cross-platform support",
   "main": "dist/index.js",

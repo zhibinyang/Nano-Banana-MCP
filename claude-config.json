@@ -1,9 +1,15 @@
 {
   "mcpServers": {
     "nano-banana": {
-      "command": "node",
-      "args": ["/Users/lemon/Code/nano-banana-mcp/dist/index.js"],
-      "description": "Google nano-banana (Gemini 2.5 Flash Image) MCP server for AI image generation and editing"
+      "command": "npx",
+      "args": [
+        "@zhibinyang/nano-banana-mcp"
+      ],
+      "env": {
+        "GEMINI_API_KEY": "your-gemini-api-key-here",
+        "GEMINI_IMAGE_MODEL": "gemini-2.5-flash-image"
+      },
+      "description": "Google Gemini Image MCP server for AI image generation and editing"
     }
   }
 }
